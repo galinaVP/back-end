@@ -10,13 +10,13 @@ import java.io.IOException;
 public class RestTest {
 
     private static final String URL = "https://reqres.in/";
+    private static final String USER_API = "/api/users";
 
     @Test//GET метод
     public void checkGetResponseStatusCode() throws IOException {
-        String endpoint = "/api/users";
         //Выполняем REST GET запрос с нашими параметрами
         // и сохраняем результат в переменную response.
-        HttpResponse response = HttpClientHelper.get(URL + endpoint, "?page=2");
+        HttpResponse response = HttpClientHelper.get(URL + USER_API, "?page=2");
         //получаем статус код из ответа
         int statusCode = response.getStatusLine().getStatusCode();
         System.out.println("Response Code : " + statusCode);
@@ -39,7 +39,9 @@ public class RestTest {
     @Test//GET метод Single User
     public void checkGetResponseFirstNameById() throws IOException {
         String endpoint = "/api/users";
+        String expectedFirstName = "Janet";
         String jsonPath = "$..data.first_name";
+
         //Выполняем REST GET запрос с нашими параметрами
         // и сохраняем результат в переменную response.
         HttpResponse response = HttpClientHelper.get(URL + endpoint, "/2");
@@ -47,9 +49,26 @@ public class RestTest {
         //Конвертируем входящий поток тела ответа в строку
         String body = HttpClientHelper.getBodyFromResponse(response);
         System.out.println(body);
-        String firstName = JsonUtils.stringFromJSONByPath(body,jsonPath);
-        String expected = "[\"Janet\"]";
-        Assert.assertEquals("First name for User with Id 2 is Janet", expected, firstName);
+        String actualFirstName = JsonUtils.stringFromJSONByPath(body,jsonPath);
+
+        Assert.assertEquals("First name for User with Id 2 is Janet", expectedFirstName, actualFirstName);
+    }
+    @Test//GET метод Single User check ID
+    public void checkGetResponseCheckId() throws IOException {
+        String endpoint = "/api/users";
+        int expectedID = 2;
+        String jsonPath = "$..data.id";
+
+        //Выполняем REST GET запрос с нашими параметрами
+        // и сохраняем результат в переменную response.
+        HttpResponse response = HttpClientHelper.get(URL + endpoint, "/2");
+
+        //Конвертируем входящий поток тела ответа в строку
+        String body = HttpClientHelper.getBodyFromResponse(response);
+        System.out.println(body);
+        int actualID = JsonUtils.intFromJSONByPath(body,jsonPath);
+
+        Assert.assertEquals("First name for User with Id 2 ", expectedID, actualID);
     }
     @Test//GET метод Single User Not Found
     public void checkGetResponseBodyEmpty() throws IOException {
@@ -63,6 +82,7 @@ public class RestTest {
         System.out.println(body);
         Assert.assertEquals("Empty body for user 23", "{}", body);
     }
+
     @Test//GET метод List Resource
     public void checkGetResponseBody() throws IOException {
         String endpoint = "/api/users";
