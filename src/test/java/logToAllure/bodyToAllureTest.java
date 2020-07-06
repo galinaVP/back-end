@@ -11,9 +11,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.*;
 
 
 public class bodyToAllureTest {
@@ -41,13 +39,13 @@ public class bodyToAllureTest {
                 .then()
                 .log().body()
                 .statusCode(200)
-                .body("per_page", equalTo(6))
-        // .body("data",allOf(hasKey("id")))
-        // .body("data",allOf(hasKey("email")))
+                .body("per_page", Matchers.equalTo(6))
+        //.body("data",allOf(hasKey("id")))
+        //.body("data",allOf(hasKey("email")))
         // .body("data",allOf(hasKey("first_name")))
         //.body("data",allOf(hasKey("last_name")))
         //  .body("data",allOf(hasKey("avatar")))
-                 .body("data.id", allOf(notNullValue()));
+                 .body("data.id", Matchers.allOf(Matchers.notNullValue()));
     }
 
     @Test
@@ -66,10 +64,10 @@ public class bodyToAllureTest {
                 .statusCode(200)
                 .body("", hasKey("data"))
                 .body("", hasKey("ad"))
-                .body("data.id", equalTo(2))
-                .body("data.email", containsString("janet.weaver"))
-                .body("data.first_name", equalTo("Janet"))
-                .body("data.last_name", equalTo("Weaver"));
+                .body("data.id", Matchers.equalTo(2))
+                .body("data.email", Matchers.containsString("janet.weaver"))
+                .body("data.first_name", Matchers.equalTo("Janet"))
+                .body("data.last_name", Matchers.equalTo("Weaver"));
     }
 
     @Test
@@ -109,7 +107,7 @@ public class bodyToAllureTest {
                         .body("", hasKey("data"))
                         .body("", hasKey("total"))
                         .body("", hasKey("total_pages"));
-        resp.body("data.size()", equalTo(
+        resp.body("data.size()", Matchers.equalTo(
                 resp
                         .extract()
                         .body()
@@ -132,11 +130,11 @@ public class bodyToAllureTest {
                 .statusCode(200)
                 .body("", hasKey("data"))
                 .body("", hasKey("ad"))
-                .body("data.id", equalTo(2))
-                .body("data.name", equalTo("fuchsia rose"))
-                .body("data.year", equalTo(2001))
-                .body("data.color", equalTo("#C74375"))
-                .body("data.pantone_value", equalTo("17-2031"));
+                .body("data.id", Matchers.equalTo(2))
+                .body("data.name", Matchers.equalTo("fuchsia rose"))
+                .body("data.year", Matchers.equalTo(2001))
+                .body("data.color", Matchers.equalTo("#C74375"))
+                .body("data.pantone_value", Matchers.equalTo("17-2031"));
     }
 
     @Test
@@ -174,10 +172,10 @@ public class bodyToAllureTest {
                 .then()
                 .log().body()
                 .statusCode(201)
-                .body("name", equalTo("morpheus"))
-                .body("job", equalTo("leader"))
-                .body("id", notNullValue())
-                .body("createdAt", notNullValue());
+                .body("name", Matchers.equalTo("morpheus"))
+                .body("job", Matchers.equalTo("leader"))
+                .body("id", Matchers.notNullValue())
+                .body("createdAt", Matchers.notNullValue());
     }
 
     @Test
@@ -198,9 +196,9 @@ public class bodyToAllureTest {
                 .then()
                 .log().body()
                 .statusCode(200)
-                .body("name", equalTo("morpheus"))
-                .body("job", equalTo("zion resident"))
-                .body("updatedAt", notNullValue());
+                .body("name", Matchers.equalTo("morpheus"))
+                .body("job", Matchers.equalTo("zion resident"))
+                .body("updatedAt", Matchers.notNullValue());
     }
 
     @Test
@@ -221,9 +219,9 @@ public class bodyToAllureTest {
                 .then()
                 .log().body()
                 .statusCode(200)
-                .body("name", equalTo("morpheus"))
-                .body("job", equalTo("zion resident"))
-                .body("updatedAt", notNullValue());
+                .body("name", Matchers.equalTo("morpheus"))
+                .body("job", Matchers.equalTo("zion resident"))
+                .body("updatedAt", Matchers.notNullValue());
     }
 
     @Test
@@ -307,7 +305,7 @@ public class bodyToAllureTest {
                 .statusCode(200)
                 .body("", hasKey("token"))
                 .and()
-                .body("token", notNullValue());
+                .body("token", Matchers.notNullValue());
     }
 
     @Test
@@ -345,6 +343,7 @@ public class bodyToAllureTest {
 
                 .then()
                 .log().body()
-                .statusCode(200);
+                .statusCode(200)
+                .time(lessThan(6000L));
     }
 }
