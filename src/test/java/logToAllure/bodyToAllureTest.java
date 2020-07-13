@@ -28,6 +28,7 @@ public class bodyToAllureTest {
 
     @Test
     public void getListUsersTest() {
+        ValidatableResponse resp =
         given()
                 .spec(requestSpec)
                 .pathParam("parameter", "users")
@@ -40,12 +41,7 @@ public class bodyToAllureTest {
                 .log().body()
                 .statusCode(200)
                 .body("per_page", Matchers.equalTo(6))
-        //.body("data",allOf(hasKey("id")))
-        //.body("data",allOf(hasKey("email")))
-        // .body("data",allOf(hasKey("first_name")))
-        //.body("data",allOf(hasKey("last_name")))
-        //  .body("data",allOf(hasKey("avatar")))
-                 .body("data.id", Matchers.allOf(Matchers.notNullValue()));
+        .body("[0]", hasKey("id"));
     }
 
     @Test
