@@ -40,8 +40,7 @@ public class bodyToAllureTest {
                 .then()
                 .log().body()
                 .statusCode(200)
-                .body("per_page", Matchers.equalTo(6))
-        .body("[0]", hasKey("id"));
+                .body("per_page", Matchers.equalTo(6));
     }
 
     @Test
